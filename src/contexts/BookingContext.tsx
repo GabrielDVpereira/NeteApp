@@ -1,51 +1,38 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { Booking } from '_/models/booking'
+import { IBookingService } from '_/services'
 
 interface Props {
     children: ReactNode
+    bookingService: IBookingService
 }
 
 interface ContextData {
     bookings: Array<Booking>
+    createBooking(booking: Booking): Promise<void>
 }
 
-
-const mockedBookings:  Array<Booking> = [
-    {
-        date: new Date(), 
-        duration: 2, 
-        user: {
-            email: 'test@test.com', 
-            name: 'test'
-        }
-    },
-    {
-        date: new Date(), 
-        duration: 4, 
-        user: {
-            email: 'test2@test.com', 
-            name: 'test 2'
-        }
-    },
-]
 const BookingContext = createContext<ContextData>({} as ContextData)
 
-const [bookings, setBookings] = useState<Array<Booking>>([])
+export function BookingContextProvider({ children, bookingService }: Props){
 
+    const [bookings, setBookings] = useState<Array<Booking>>([])
 
-useEffect(() => {
-    getAllBookings()
-}, [])
+    useEffect(() => {
+        getAllBookings()
+    }, [])
 
-const createBooking = (booking: Booking) => {} 
+    const createBooking = async (booking: Booking) => {
+        await bookingService.createBooking(booking)
+    } 
 
-const getAllBookings = () => {
-    setBookings(mockedBookings)
-} 
+    const getAllBookings = async () => {
+        const bookings = await bookingService.listBookings()
+        setBookings(bookings || [])
+    } 
 
-export function BookingContextProvider({ children }: Props){
     return(
-        <BookingContext.Provider value={{ bookings }}>
+        <BookingContext.Provider value={{ bookings, createBooking }}>
             {children}
         </BookingContext.Provider>
     )
