@@ -1,4 +1,4 @@
-import { useState, createContext, ReactNode, useContext, useEffect } from "react";
+import { useState, createContext, ReactNode, useContext, useEffect, useCallback } from "react";
 import { User } from "_/models";
 import { IAuthService } from "_/services"
 
@@ -35,16 +35,16 @@ export function AuthContextProvider({ authService, children } : Props) {
         setLoadingAuth(false)
     }
 
-    const signInWithGoogle = async () => {
+    const signInWithGoogle = useCallback(async () => {
         const userResponse = await authService.signInWithGoogle()
         if(!userResponse) return
         setUser(userResponse)
-    }
+    }, [])
 
-    const logout = () => {
+    const logout = useCallback(() => {
         authService.logout()
         setUser({} as User)
-    }
+    }, [])
 
     return (
         <AuthContext.Provider value={{
