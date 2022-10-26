@@ -50,3 +50,6 @@ export function BookingContextProvider({ children }: Props){
         </BookingContext.Provider>
     )
 }
+
+
+export const useBooking = () => useContext(BookingContext)
