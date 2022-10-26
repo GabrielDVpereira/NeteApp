@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 
-
 export interface IAlertHelper {
     alertSucess: (message: string) => void
     alertError: (message: string) => void

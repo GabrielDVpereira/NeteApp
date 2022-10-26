@@ -4,7 +4,7 @@ interface Props {
     children: JSX.Element
 }
 export function Protected({ children }:Props){
-    const isAuthenticated = false; 
+    const isAuthenticated = true; 
     if(!isAuthenticated) return <Navigate to="/login" replace={true} />
     return children
  }
