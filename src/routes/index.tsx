@@ -1,14 +1,24 @@
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Title } from '_/components'
 import { ROUTE_PATHS } from '_/constants'
+import { useAuth } from '_/contexts'
 import { Checkin, Home, Login, Booking } from '_/pages'
 import { Protected } from "./protected.route"
 
 export function AppRoutes(){
+    const { loadingAuth } = useAuth()
+
+    if(loadingAuth) return <Title>Loading...</Title>
+
     return(
       <BrowserRouter>
         <Routes>
-          <Route index element={<Home />} />
+          <Route index element={
+            <Protected>
+              <Home />
+            </Protected>
+          } />
           <Route path={ ROUTE_PATHS.login } element={<Login />} />
           <Route 
             path={ROUTE_PATHS.checkin}
