@@ -1,8 +1,12 @@
-import { AppRoutes } from "./routes";
+import { ToastContainer } from "react-toastify";
+import { AppRoutes } from "_/routes";
 
 function App() {
   return (
-    <AppRoutes />
+    <>
+      <AppRoutes />
+      <ToastContainer theme="colored" />
+    </>
   );
 }
 
