@@ -16,6 +16,7 @@ export class BookingService implements IBookingService {
     async createBooking(booking: Booking): Promise<void> {
         try {
             await this.bookingDatabaseRepository.create(booking);
+            this.alertHelper.alertSucess("Reserva realizada com sucesso!")
         } catch(err){
             console.error(err)
             this.alertHelper.alertError("Não foi possível agendar sua reserva.")
@@ -30,5 +31,4 @@ export class BookingService implements IBookingService {
             this.alertHelper.alertError("Não foi possível recuperar as reservas.")
         }
     }
-    
 }

@@ -20,7 +20,7 @@ const AuthContext = createContext<ContextData>({} as ContextData)
 
 export function AuthContextProvider({ authService, children } : Props) {
     const [user, setUser] = useState<User>({} as User)
-    const [loadingAuth, setLoadingAuth] = useState(false)
+    const [loadingAuth, setLoadingAuth] = useState(true)
 
     const isAuthenticated = !!user.email
 

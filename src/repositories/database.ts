@@ -1,8 +1,8 @@
-import { getFirestore, setDoc, doc, Firestore, getDoc, collection, query, getDocs  } from 'firebase/firestore';
+import { getFirestore, setDoc, doc, Firestore, collection, query, getDocs  } from 'firebase/firestore';
 
 
 export interface DatabaseRepository {
-    getAll<T>(options?: any): Promise<T[]> 
+    getAll<T>(): Promise<T[]> 
     create(data: any): Promise<void>
 }
 
@@ -11,8 +11,8 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
 
     constructor( private readonly collection: string){}
 
-    async getAll<T>(options?: any): Promise<T[]> {
-        const docsRef = query(collection(this.firestore, this.collection), options);
+    async getAll<T>(): Promise<T[]> {
+        const docsRef = query(collection(this.firestore, this.collection));
         const docsSnap = await getDocs(docsRef)
 
         const result: T[] = []
@@ -25,6 +25,6 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
     }
     
     async create(data: any){
-        await setDoc(doc(this.firestore, this.collection), data)
+        await setDoc(doc(collection(this.firestore, this.collection)), data)
     }
 }
