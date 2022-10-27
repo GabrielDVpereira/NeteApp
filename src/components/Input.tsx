@@ -2,14 +2,15 @@ import { InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
     label: string,
-    errorMessage?: string
+    errorMessage?: string,
+    full?: boolean
 }
 
-export function Input({label, errorMessage='', ...rest }: Props){
+export function Input({label, errorMessage='', full = false, ...rest }: Props){
     const error = !! errorMessage
 
     return (
-        <div className="flex flex-col m-3">
+        <div className={`flex flex-col p-2 ${full && 'w-full'}`}>
             <label
                 className={`font-bold text-${error ? 'error' : 'black' }`}>
                     {label}
