@@ -3,6 +3,7 @@ import { Input, Title, Text, Button, PageTemplate } from '_/components'
 import { useAuth } from '_/contexts'
 import carImg from "_/assets/CarApp.png"
 import { useNavigate } from 'react-router-dom'
+import { ROUTE_PATHS } from '_/constants'
 
 
 export function Checkin(){
@@ -29,7 +30,7 @@ export function Checkin(){
         }
         // TODO: send checkinData to firebase and handle error
         console.log(checkinData)
-        return navigate('/')
+        return navigate(ROUTE_PATHS.home)
     }
 
 
