@@ -2,7 +2,7 @@ import { ReactNode, ButtonHTMLAttributes } from "react"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode,
-    styleType?: 'primary' | 'secondary' | 'error',
+    styleType?: 'primary' | 'secondary' | 'error' | 'success',
     size?: 'full' | 'half' | 'third' | 'quarter' | 'default'
 }
 
@@ -27,7 +27,7 @@ export function Button({ children, styleType='primary', size='default', ...rest 
     `
 
     return (
-        <div className="p-2">
+        <div className={`p-2 ${buttonSize[size]}`}>
             <button
             className={`${customClass} font-bold py-2 px-4 rounded`} {...rest}>
                 {children}

@@ -15,7 +15,7 @@ export function Login(){
             <img src={Logo} width={400} />
             <Title size="3xl">Nete App</Title>
             <Text className="mb-5 text-center">Controle de uso do carro da Ivanete</Text>
-            <Button onClick={() => signInWithGoogle()} styleType="error">
+            <Button onClick={() => signInWithGoogle()} >
                 <div className="flex items-center">
                     <FaGoogle color="white" className="mr-2"/> Sign in with Google
                 </div>
