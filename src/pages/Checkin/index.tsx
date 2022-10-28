@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Input, Title, Text, Button } from '_/components'
 import { useAuth } from '_/contexts'
 import CarApp from "_/assets/CarApp.png"
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 export function Checkin(){
@@ -43,7 +43,10 @@ export function Checkin(){
                     <img className='w-5/6 lg:w-4/6' src={CarApp} />
                 </div>
                 <div className='flex flex-col lg:items-center p-5 pt-10 lg:align-center'>
-                    <Text className="text-lg text-left lg:mb-3 mx-3">Registrando que <b>{user.name}</b> está usando o carro <b>agora</b>. Informe para onde irá com o carro.</Text>
+                    <Text className="text-lg text-left lg:mb-3 mx-3">
+                        Registrando que <b>{user.name}</b> está usando o carro <b>agora</b>.
+                        Informe seu destino.
+                    </Text>
                     <Input
                         full
                         label="Destino"
