@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Loading } from '_/components'
 import { ROUTE_PATHS } from '_/constants'
 import { useAuth } from '_/contexts'
-import { Checkin, Home, Login, Booking } from '_/pages'
+import { Checkin, Home, Login, Booking, NotFound } from '_/pages'
 import { Protected } from "./protected.route"
 
 export function AppRoutes(){
@@ -34,6 +34,10 @@ export function AppRoutes(){
                 <Booking />
               </Protected>
             }/>
+          <Route 
+            path="*"
+            element={ <NotFound /> }
+          />
         </Routes>
       </BrowserRouter>
     )
