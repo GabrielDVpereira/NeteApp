@@ -1,4 +1,4 @@
-import { Title, Text, Input, Button } from "_/components";
+import { Text, Input, Button, Image, PageTemplate } from "_/components";
 import bookingImg from '_/assets/booking.png'
 import { useState } from "react";
 import { useAuth, useBooking } from "_/contexts";
@@ -25,15 +25,17 @@ export function Booking(){
         createBooking(bookingData)
     }
     return (
-        <div>
-            <img src={bookingImg} />
-            <Title>Faça sua reserva</Title>
-            <Text>Reserve o carro da Ivanete para o dia de sua escolha</Text>
-            <form onSubmit={onSubmit}>
+        <PageTemplate
+            imagePath={bookingImg}
+            pageTitle="Faça sua reserva"
+        >
+            <Text>Reserve o carro da Ivanete para o dia de sua escolha.</Text>
+            <form onSubmit={onSubmit} className="w-full">
                 <Input label="Data e hora" type={"datetime-local"} onChange={onDateChange} value={parseDateToLocaleString(date)}/>
-                <Input label="Duração" type={"number"} onChange={onDurationChange} value={duration}/>
-                <Button disabled={isCreatingBooking}>{isCreatingBooking ? "Criando..." : "Criar reserva"}</Button>
+                <Input label="Duração (Horas)" type={"number"} onChange={onDurationChange} value={duration}/>
+                <Button size="full"  styleType="secondary" disabled={isCreatingBooking}>{isCreatingBooking ? "Criando..." : "Criar reserva"}</Button>
             </form>
-        </div>
+        </PageTemplate>
+
     )
 }
