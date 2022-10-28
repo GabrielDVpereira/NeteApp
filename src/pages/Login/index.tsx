@@ -3,11 +3,12 @@ import { Button, Text, Title } from "_/components";
 import { useAuth } from "_/contexts";
 import { FaGoogle } from "react-icons/fa"
 import Logo from "_/assets/CarDriving.png"
+import { ROUTE_PATHS } from "_/constants";
 
 export function Login(){
     const { signInWithGoogle, isAuthenticated } = useAuth()
 
-    if(isAuthenticated) return <Navigate to="/"/>
+    if(isAuthenticated) return <Navigate to={ROUTE_PATHS.home}/>
 
     return (
         <div className="flex flex-col items-center p-5">

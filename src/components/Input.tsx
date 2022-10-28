@@ -1,3 +1,4 @@
+import classname from 'classnames'
 import { InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -6,18 +7,24 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
     full?: boolean
 }
 
-export function Input({label, errorMessage='', full = false, ...rest }: Props){
+export function Input({label, errorMessage='', full = true, ...rest }: Props){
     const error = !! errorMessage
 
     return (
-        <div className={`flex flex-col p-2 ${full && 'w-full'}`}>
+        <div className={classname('flex', 'flex-col', 'p-2', {'w-full': full} )}>
             <label
-                className={`font-bold text-${error ? 'error' : 'black' }`}>
+                className={ classname('font-bold', {'text-error': error})}>
                     {label}
             </label>
             <input
-                className={`p-1 border-2 ${error && 'border-error focus:outline-none'} rounded`}
-                {...rest}/>
+                className={
+                    classname('p-1', 'border-2', 'rounded', {
+                        'border-error': error, 
+                        'focus:outline-none': error
+                    })
+                }
+                {...rest}
+            />
             <span className="text-error text-xs">{errorMessage}</span>
         </div>
     )

@@ -1,4 +1,4 @@
-import { Navigate, PathRouteProps, Route } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { useAuth } from "_/contexts";
 
 interface Props {
