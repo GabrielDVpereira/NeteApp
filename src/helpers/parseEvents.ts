@@ -1,13 +1,16 @@
 import { Booking, Checkin, Event } from '_/models'
+import { parseHoursToMilisseconds } from '_/util';
 
-const hour =  60 * 60 * 1000;
+function formatEndDate(date: Date, duration: number){
+    return new Date(date.getTime() + parseHoursToMilisseconds(duration))
+}
 
 export function parseEvents(checkins: Array<Checkin>, bookings: Array<Booking>): Array<Event>{
     const checkinEvents = checkins.map( checkin => {
         return {
             title: checkin.username + '\nlocal: ' + checkin.local,
             start: checkin.date,
-            end: new Date(checkin.date.getTime() + checkin.duration * hour)
+            end: formatEndDate(checkin.date, checkin.duration)
         }
     })
 
@@ -15,7 +18,7 @@ export function parseEvents(checkins: Array<Checkin>, bookings: Array<Booking>):
         return {
             title: 'Reserva de ' + booking.bookerName,
             start: booking.date,
-            end: new Date(booking.date.getTime() + booking.duration * hour)
+            end: formatEndDate(booking.date, booking.duration)
         }
     })
 

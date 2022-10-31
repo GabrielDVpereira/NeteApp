@@ -9,7 +9,7 @@ import { parseEvents } from "_/helpers";
 import { Event } from "_/models";
 
 export function Home(){
-    const [events, setEvents] = useState([] as Array<Event>)
+    const [events, setEvents] = useState<Array<Event>>([])
 
     const { checkins } = useCheckin()
     const { bookings } = useBooking()
@@ -27,9 +27,9 @@ export function Home(){
                 Home Page
             </Title>
             <div className="flex">
-                    <Button onClick={() => navigate(ROUTE_PATHS.checkin)}>Fazer Checkin</Button>
-                    <Button onClick={() => navigate(ROUTE_PATHS.booking)}>Criar Reserva</Button>
-                    <Button onClick={logout}>Logout</Button>
+                <Button onClick={() => navigate(ROUTE_PATHS.checkin)}>Fazer Check-in</Button>
+                <Button onClick={() => navigate(ROUTE_PATHS.booking)}>Criar Reserva</Button>
+                <Button onClick={logout}>Logout</Button>
             </div>
             <Calendar events={events} />
 
