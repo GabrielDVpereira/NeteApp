@@ -1,5 +1,5 @@
 import { AlertHelper } from "_/helpers"
-import { Booking } from "_/models/booking"
+import { Booking, mapResponseToBooking } from "_/models"
 import { DatabaseRepository } from "_/repositories"
 
 export interface IBookingService {
@@ -9,7 +9,7 @@ export interface IBookingService {
 
 export class BookingService implements IBookingService {
     constructor(
-        private readonly bookingDatabaseRepository: DatabaseRepository, 
+        private readonly bookingDatabaseRepository: DatabaseRepository,
         private readonly alertHelper: AlertHelper
     ){}
 
@@ -25,7 +25,7 @@ export class BookingService implements IBookingService {
     async listBookings(): Promise<Booking[] | undefined> {
         try {
             const bookings = await this.bookingDatabaseRepository.getAll<Booking>()
-            return bookings
+            return bookings.map(booking => mapResponseToBooking(booking))
         } catch(err){
             console.error(err)
             this.alertHelper.alertError("Não foi possível recuperar as reservas.")
