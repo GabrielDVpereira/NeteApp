@@ -14,12 +14,12 @@ export function Checkin(){
     const navigate = useNavigate()
     const { createCheckin, isCreatingCheckin } = useCheckin()
 
-    const localOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onLocalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLocal(e.target.value)
         setErrorMessage('')
     }
 
-    const durationOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDuration(Number(e.target.value))
     }
 
@@ -56,13 +56,13 @@ export function Checkin(){
                     full
                     label="Destino"
                     value={local}
-                    onChange={localOnChange}
+                    onChange={onLocalChange}
                     errorMessage={errorMessage} />
 
                 <Input
                     label="Duração (Horas)"
                     type={"number"}
-                    onChange={durationOnChange}
+                    onChange={onDurationChange}
                     value={duration} />
 
                 <Button
