@@ -46,10 +46,10 @@ export function Checkin(){
     return(
         <PageTemplate
             imagePath={carImg}
-            pageTitle="Checkin"
+            pageTitle="Check-in"
         >
             <Text className="text-lg text-left lg:mb-3 mx-3">
-                Registrando que <b>{user.name}</b> está usando o carro <b>agora</b>. Informe seu destino.
+                Registrando que <b>{user.name}</b> está usando o carro <b>agora</b>. Informe seu destino e por quanto tempo vai usar o carro.
             </Text>
             <Form onSubmit={onSubmit}>
                 <Input

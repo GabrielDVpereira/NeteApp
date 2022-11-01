@@ -1,21 +1,37 @@
 
-import { useState } from "react";
-import { Button, Input, Title } from "_/components";
-import { useAuth } from "_/contexts";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Title } from "_/components";
+import { Calendar } from "_/components/Calendar";
+import { ROUTE_PATHS } from "_/constants";
+import { useAuth, useBooking, useCheckin } from "_/contexts";
+import { parseEvents } from "_/helpers";
+import { Event } from "_/models";
 
 export function Home(){
-    const [value, setValue] = useState('')
+    const [events, setEvents] = useState<Array<Event>>([])
+
+    const { checkins } = useCheckin()
+    const { bookings } = useBooking()
+    const navigate = useNavigate()
 
     const { logout } = useAuth()
 
+    useEffect(() => {
+        setEvents(parseEvents(checkins, bookings))
+    }, [checkins, bookings])
+
     return(
         <>
-            <Title>
+            <Title size='3xl'>
                 Home Page
             </Title>
-            <Input value={value} onChange={(e) => setValue(e.target.value)} label="Label" />
-            <Button onClick={() => console.log('button')} size='full'>Button</Button>
-            <Button onClick={logout}>Logout</Button>
+            <div className="flex">
+                <Button onClick={() => navigate(ROUTE_PATHS.checkin)}>Fazer Check-in</Button>
+                <Button onClick={() => navigate(ROUTE_PATHS.booking)}>Criar Reserva</Button>
+                <Button onClick={logout}>Logout</Button>
+            </div>
+            <Calendar events={events} />
 
         </>
     )
