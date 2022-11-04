@@ -1,4 +1,4 @@
-import { Text, Input, Button, Image, PageTemplate, Form } from "_/components";
+import { Text, Input, Button, PageTemplate, Form } from "_/components";
 import bookingImg from '_/assets/booking.png'
 import { useState } from "react";
 import { useAuth, useBooking } from "_/contexts";
@@ -37,7 +37,7 @@ export function Booking(){
             <Form onSubmit={onSubmit}>
                 <Input label="Data e hora" type={"datetime-local"} onChange={onDateChange} value={parseDateToLocaleString(date)}/>
                 <Input label="Duração (Horas)" type={"number"} onChange={onDurationChange} value={duration}/>
-                <Button size="full"  styleType="secondary" disabled={isCreatingBooking}>{isCreatingBooking ? "Criando..." : "Criar reserva"}</Button>
+                <Button size="full" disabled={isCreatingBooking}>{isCreatingBooking ? "Criando..." : "Criar reserva"}</Button>
             </Form>
         </PageTemplate>
 
