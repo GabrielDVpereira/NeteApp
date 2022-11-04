@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Input, Title, Text, Button, PageTemplate, Form } from '_/components'
 import { useAuth, useCheckin } from '_/contexts'
-import carImg from "_/assets/CarApp.png"
+import checkinImg from "_/assets/checkin.png"
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_PATHS } from '_/constants'
 
@@ -45,7 +45,7 @@ export function Checkin(){
 
     return(
         <PageTemplate
-            imagePath={carImg}
+            imagePath={checkinImg}
             pageTitle="Check-in"
         >
             <Text className="text-lg text-left lg:mb-3 mx-3">
@@ -67,7 +67,6 @@ export function Checkin(){
 
                 <Button
                     size="full"
-                    styleType="secondary"
                     disabled={isCreatingCheckin}>
                         { isCreatingCheckin ? 'Registrando...' : 'Registrar'}
                 </Button>
