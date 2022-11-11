@@ -1,4 +1,4 @@
-import { AlertHelper } from "_/helpers"
+import { IAlertHelper } from "_/helpers"
 import { Booking, mapResponseToBooking } from "_/models"
 import { DatabaseRepository } from "_/repositories"
 
@@ -10,7 +10,7 @@ export interface IBookingService {
 export class BookingService implements IBookingService {
     constructor(
         private readonly bookingDatabaseRepository: DatabaseRepository,
-        private readonly alertHelper: AlertHelper
+        private readonly alertHelper: IAlertHelper
     ){}
 
     async createBooking(booking: Booking): Promise<void> {

@@ -1,4 +1,4 @@
-import { AlertHelper } from "_/helpers"
+import { IAlertHelper } from "_/helpers"
 import { Checkin, mapResponseToCheckin } from "_/models"
 import { DatabaseRepository } from "_/repositories"
 
@@ -10,7 +10,7 @@ export interface ICheckinService {
 export class CheckinService implements ICheckinService {
     constructor(
         private readonly checkinDatabaseRepository: DatabaseRepository,
-        private readonly alertHelper: AlertHelper
+        private readonly alertHelper: IAlertHelper
     ){}
 
     async createCheckin(checkin: Checkin): Promise<void> {
