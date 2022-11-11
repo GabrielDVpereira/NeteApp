@@ -21,6 +21,7 @@ export class AuthService implements IAuthService {
             const result = await signInWithPopup(this.auth, this.provider)
             return parseUser(result.user)
         } catch (error) {
+            console.error(error)
             this.alertHelper.alertError("Não foi possivel logar com o Google")
         }
     }
