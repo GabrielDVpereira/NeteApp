@@ -1,8 +1,8 @@
 import { ReactNode, ButtonHTMLAttributes } from "react"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: ReactNode,
-    styleType?: 'primary' | 'secondary' | 'error' | 'success',
+    children: ReactNode
+    styleType?: 'primary' | 'secondary' | 'error' | 'success'
     size?: 'full' | 'half' | 'third' | 'quarter' | 'default'
 }
 

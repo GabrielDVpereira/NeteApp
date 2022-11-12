@@ -4,15 +4,15 @@ import { IAuthService } from "_/services"
 
 
 interface Props{
-    authService: IAuthService,
+    authService: IAuthService
     children: ReactNode
 }
 
 interface ContextData {
-    user: User,
-    isAuthenticated: boolean,
-    signInWithGoogle: ()=> Promise<void>
-    loadingAuth: boolean,
+    user: User
+    isAuthenticated: boolean
+    signIn: ()=> Promise<void>
+    loadingAuth: boolean
     logout: ()=> void
 }
 
@@ -35,8 +35,8 @@ export function AuthContextProvider({ authService, children } : Props) {
         setLoadingAuth(false)
     }
 
-    const signInWithGoogle = useCallback(async () => {
-        const userResponse = await authService.signInWithGoogle()
+    const signIn = useCallback(async () => {
+        const userResponse = await authService.signIn()
         if(!userResponse) return
         setUser(userResponse)
     }, [])
@@ -49,7 +49,7 @@ export function AuthContextProvider({ authService, children } : Props) {
     return (
         <AuthContext.Provider value={{
             user,
-            signInWithGoogle,
+            signIn,
             isAuthenticated,
             loadingAuth,
             logout

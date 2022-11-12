@@ -1,12 +1,11 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider, Auth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, Auth, onAuthStateChanged, signOut, UserCredential } from "firebase/auth";
 import { app } from "_/config/firebase";
-import { parseUser } from "_/helpers";
 import { IAlertHelper } from "_/helpers/alert";
-import { User } from "_/models";
+import { mapAuthResponseToUser, User } from "_/models";
 import { IUserService } from "./userService";
 
 export interface IAuthService {
-    signInWithGoogle: () => Promise<User | undefined>,
+    signIn: () => Promise<User | undefined>,
     checkAuthenticated: () => Promise<User>,
     logout: () => Promise<void>
 }
@@ -20,32 +19,37 @@ export class AuthService implements IAuthService {
         private readonly userService: IUserService
     ){}
 
-    async signInWithGoogle(): Promise<User | undefined> {
+    async signIn(): Promise<User | undefined> {
         try {
-            const result = await signInWithPopup(this.auth, this.provider)
-            const userResponse = parseUser(result.user)
-            return await this.createUserOnFirstLogin(userResponse)
+            const credentials = await this.signInWithGoogle()
+            const existingUser = await this.checkUserExists(credentials.user.email || '')
+            if(existingUser) return existingUser
+
+            return await this.createUser(credentials.user)
         } catch (error) {
             console.error(error)
             this.alertHelper.alertError("Não foi possivel logar com o Google")
         }
     }
-    async createUserOnFirstLogin(userResponse: User): Promise<User | undefined> {
-        const findUser = await this.userService.findUser(userResponse)
 
-        if(!findUser){
-            this.userService.createUser(userResponse)
-            return(userResponse)
-        }
+    async signInWithGoogle() : Promise<UserCredential> {
+        return await signInWithPopup(this.auth, this.provider)
+    }
 
-        return findUser
+    async checkUserExists(email: string): Promise<User | undefined>  {
+        return await this.userService.findUser(email)
+    }
+
+    async createUser(data: any): Promise<User | undefined> {
+        const responseUser = mapAuthResponseToUser(data)
+        return this.userService.createUser(responseUser)
     }
 
     async checkAuthenticated() {
         return new Promise<User>(resolve => {
             onAuthStateChanged(this.auth, (user) => {
                 if(!user) return resolve({} as User)
-                resolve(parseUser(user))
+                resolve(mapAuthResponseToUser(user))
             });
         })
     }
