@@ -6,7 +6,7 @@ import { IUserService } from "./userService";
 
 export interface IAuthService {
     signInWithGoogle: () => Promise<User | undefined>,
-    checkAuthenticated: () => Promise<User>,
+    checkAuthenticated: () => Promise<User | undefined>,
     logout: () => Promise<void>
 }
 
@@ -22,7 +22,7 @@ export class AuthService implements IAuthService {
     async signInWithGoogle(): Promise<User | undefined> {
         try {
             const result = await signInWithPopup(this.auth, this.provider)
-            return this.retrieveUser(result.user)
+            return await this.retrieveUser(result.user)
         } catch (error) {
             console.error(error)
             this.alertHelper.alertError("Não foi possivel logar com o Google")
@@ -46,10 +46,10 @@ export class AuthService implements IAuthService {
     }
 
     async checkAuthenticated() {
-        return new Promise<User>(resolve => {
-            onAuthStateChanged(this.auth, (user) => {
-                if(!user) return resolve({} as User)
-                resolve(mapAuthResponseToUser(user))
+        return new Promise<User | undefined>(resolve => {
+            onAuthStateChanged(this.auth, async (user) => {
+                if(!user || !user.email) return resolve({} as User)
+                resolve(await this.userService.findUser(user.email))
             });
         })
     }

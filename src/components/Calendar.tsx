@@ -12,10 +12,20 @@ interface Props {
 const localizer = momentLocalizer(moment);
 
 export function Calendar({ events, onSelectEvent }: Props){
-    const [mode, setMode] = useState<View>('week')
-
-
+    const [mode, setMode] = useState<View>('day')
     const isMonth = mode === 'month';
+
+    const eventStyleGetter = (event: any) => {
+        const style = {
+            backgroundColor: event.color,
+            borderRadius: '0px',
+            opacity: 1,
+            color: 'black',
+            border: '0px',
+            display: 'block'
+        }
+        return { style }
+    }
 
     return <BigCalendar
         localizer={localizer}
@@ -25,5 +35,6 @@ export function Calendar({ events, onSelectEvent }: Props){
         onView={(view) => setMode(view)}
         style={isMonth ? { height: '100vh' } : {}}
         onSelectEvent={onSelectEvent}
+        eventPropGetter={eventStyleGetter}
         />
 }

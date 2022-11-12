@@ -2,7 +2,7 @@ export interface User {
     name: string
     email: string
     admin: boolean
-    color?: string
+    color: string
 }
 
 export function mapAuthResponseToUser(data: any): User {

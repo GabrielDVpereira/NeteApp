@@ -31,7 +31,9 @@ export function AuthContextProvider({ authService, children } : Props) {
     const checkAuthenticated = async () => {
         setLoadingAuth(true)
         const userResponse = await authService.checkAuthenticated()
-        setUser(userResponse)
+        if (userResponse){
+            setUser(userResponse)
+        }
         setLoadingAuth(false)
     }
 

@@ -33,6 +33,7 @@ export function Checkin(){
 
         const checkinData = {
             username: user.name,
+            userColor: user.color,
             date: new Date(),
             duration,
             local
