@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Event } from "_/models";
 
 interface Props {
-    events: Array<Event>,
+    events: Array<Event>
     onSelectEvent?: () => void
 }
 

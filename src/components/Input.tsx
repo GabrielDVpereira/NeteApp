@@ -2,8 +2,8 @@ import classname from 'classnames'
 import { InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-    label: string,
-    errorMessage?: string,
+    label: string
+    errorMessage?: string
     full?: boolean
 }
 
@@ -19,7 +19,7 @@ export function Input({label, errorMessage='', full = true, ...rest }: Props){
             <input
                 className={
                     classname('p-1', 'border-2', 'rounded', {
-                        'border-error': error, 
+                        'border-error': error,
                         'focus:outline-none': error
                     })
                 }

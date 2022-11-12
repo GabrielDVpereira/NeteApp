@@ -4,15 +4,15 @@ import { IAuthService } from "_/services"
 
 
 interface Props{
-    authService: IAuthService,
+    authService: IAuthService
     children: ReactNode
 }
 
 interface ContextData {
-    user: User,
-    isAuthenticated: boolean,
+    user: User
+    isAuthenticated: boolean
     signInWithGoogle: ()=> Promise<void>
-    loadingAuth: boolean,
+    loadingAuth: boolean
     logout: ()=> void
 }
 
