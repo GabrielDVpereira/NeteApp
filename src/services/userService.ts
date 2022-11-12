@@ -1,4 +1,4 @@
-import { IAlertHelper } from '_/helpers';
+import { defineRandomColor, IAlertHelper } from '_/helpers';
 import { User } from '_/models'
 import { DatabaseRepository } from "_/repositories"
 
@@ -15,7 +15,8 @@ export class UserService implements IUserService {
 
     async createUser(user: User): Promise<void> {
         try {
-            await this.userDatabaseRepository.create(user);
+            user.color = defineRandomColor()
+            await this.userDatabaseRepository.create(user)
             this.alertHelper.alertSucess("Usuário criado com sucesso!")
         } catch(err){
             console.error(err)
