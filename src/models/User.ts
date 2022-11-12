@@ -5,7 +5,7 @@ export interface User {
     color?: string
 }
 
-export function mapResponseToUser(data: any): User {
+export function mapAuthResponseToUser(data: any): User {
     return {
         name: data.displayName || "",
         email: data.email || "",
@@ -13,3 +13,13 @@ export function mapResponseToUser(data: any): User {
         admin: data.admin || false
     }
 }
+
+export function mapResponseToUser(data: any): User {
+    return {
+        name: data.name,
+        email: data.email,
+        color: data.color,
+        admin: data.admin
+    }
+}
+
