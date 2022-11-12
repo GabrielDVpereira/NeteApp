@@ -28,7 +28,7 @@ export class UserService implements IUserService {
     async findUser(email: string): Promise<User | undefined>{
         try {
             const userFound =  await this.userDatabaseRepository.findBy('email', email)
-            return mapResponseToUser(userFound[0])
+            if(userFound.length) return mapResponseToUser(userFound[0])
         } catch (error) {
             console.log(error)
             this.alertHelper.alertError("Ocorreu um erro ao buscar o usuário")

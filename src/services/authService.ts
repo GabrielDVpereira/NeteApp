@@ -1,7 +1,7 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider, Auth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "_/config/firebase";
 import { IAlertHelper } from "_/helpers/alert";
-import { mapResponseToUser, User } from "_/models";
+import { mapAuthResponseToUser, User } from "_/models";
 import { IUserService } from "./userService";
 
 export interface IAuthService {
@@ -32,19 +32,23 @@ export class AuthService implements IAuthService {
     async retrieveUser(data: any): Promise<User | undefined> {
         const existingUser = await this.userService.findUser(data.email)
 
-        if(!existingUser){ // Creates user on first login
-            this.userService.createUser(data)
-            return(mapResponseToUser(data))
+        if(!existingUser){
+            return this.createUserOnFirstLogin(data)
         }
 
         return existingUser
+    }
+
+    async createUserOnFirstLogin(data: any): Promise<User | undefined> {
+        const responseUser = mapAuthResponseToUser(data)
+        return this.userService.createUser(responseUser)
     }
 
     async checkAuthenticated() {
         return new Promise<User>(resolve => {
             onAuthStateChanged(this.auth, (user) => {
                 if(!user) return resolve({} as User)
-                resolve(mapResponseToUser(user))
+                resolve(mapAuthResponseToUser(user))
             });
         })
     }
