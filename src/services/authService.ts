@@ -1,8 +1,7 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider, Auth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "_/config/firebase";
-import { parseUser } from "_/helpers";
 import { IAlertHelper } from "_/helpers/alert";
-import { User } from "_/models";
+import { mapResponseToUser, User } from "_/models";
 import { IUserService } from "./userService";
 
 export interface IAuthService {
@@ -23,29 +22,29 @@ export class AuthService implements IAuthService {
     async signInWithGoogle(): Promise<User | undefined> {
         try {
             const result = await signInWithPopup(this.auth, this.provider)
-            const userResponse = parseUser(result.user)
-            return await this.createUserOnFirstLogin(userResponse)
+            return this.retrieveUser(result.user)
         } catch (error) {
             console.error(error)
             this.alertHelper.alertError("Não foi possivel logar com o Google")
         }
     }
-    async createUserOnFirstLogin(userResponse: User): Promise<User | undefined> {
-        const findUser = await this.userService.findUser(userResponse)
 
-        if(!findUser){
-            this.userService.createUser(userResponse)
-            return(userResponse)
+    async retrieveUser(data: any): Promise<User | undefined> {
+        const existingUser = await this.userService.findUser(data.email)
+
+        if(!existingUser){ // Creates user on first login
+            this.userService.createUser(data)
+            return(mapResponseToUser(data))
         }
 
-        return findUser
+        return existingUser
     }
 
     async checkAuthenticated() {
         return new Promise<User>(resolve => {
             onAuthStateChanged(this.auth, (user) => {
                 if(!user) return resolve({} as User)
-                resolve(parseUser(user))
+                resolve(mapResponseToUser(user))
             });
         })
     }

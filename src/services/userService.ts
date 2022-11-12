@@ -1,10 +1,10 @@
 import { defineRandomColor, IAlertHelper } from '_/helpers';
-import { User } from '_/models'
+import { mapResponseToUser, User } from '_/models'
 import { DatabaseRepository } from "_/repositories"
 
 export interface IUserService {
-    createUser(user: User): Promise<void>
-    findUser(user: User): Promise<User | undefined>
+    createUser(user: User): Promise<User | undefined>
+    findUser(email: string): Promise<User | undefined>
 }
 
 export class UserService implements IUserService {
@@ -13,21 +13,22 @@ export class UserService implements IUserService {
         private readonly alertHelper: IAlertHelper
     ){}
 
-    async createUser(user: User): Promise<void> {
+    async createUser(user: User): Promise<User | undefined> {
         try {
             user.color = defineRandomColor()
             await this.userDatabaseRepository.create(user)
             this.alertHelper.alertSucess("Usuário criado com sucesso!")
+            return user
         } catch(err){
             console.error(err)
             this.alertHelper.alertError("Não foi possível fazer o cadastro.")
         }
     }
 
-    async findUser(user: User): Promise<User | undefined>{
+    async findUser(email: string): Promise<User | undefined>{
         try {
-            const userFound =  await this.userDatabaseRepository.findBy('email', user.email) as User[]
-            return userFound[0]
+            const userFound =  await this.userDatabaseRepository.findBy('email', email)
+            return mapResponseToUser(userFound[0])
         } catch (error) {
             console.log(error)
             this.alertHelper.alertError("Ocorreu um erro ao buscar o usuário")
