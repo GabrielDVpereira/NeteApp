@@ -22,8 +22,8 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
     }
 
     async findBy<T>(field: string, value: string) :Promise<T[]> {
-        const citiesRef = collection(this.firestore, this.collection);
-        const docsRef = query(citiesRef, where(field, "==", value));
+        const docsCollection = collection(this.firestore, this.collection);
+        const docsRef = query(docsCollection, where(field, "==", value));
 
         return await this.parseQueryResult(docsRef)
     }
