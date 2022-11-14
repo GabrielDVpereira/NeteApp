@@ -14,7 +14,7 @@ export function mapAuthResponseToUser(data: any): User {
     }
 }
 
-export function mapResponseToUser(data: any): User {
+export function mapResponseDbToUser(data: any): User {
     return {
         name: data.name,
         email: data.email,
