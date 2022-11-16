@@ -30,6 +30,7 @@ export function Booking(){
     }
     return (
         <PageTemplate
+            navigate={navigate}
             imagePath={bookingImg}
             pageTitle="Faça sua reserva"
         >

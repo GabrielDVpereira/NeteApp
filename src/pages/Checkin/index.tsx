@@ -46,6 +46,7 @@ export function Checkin(){
 
     return(
         <PageTemplate
+            navigate={navigate}
             imagePath={checkinImg}
             pageTitle="Check-in"
         >

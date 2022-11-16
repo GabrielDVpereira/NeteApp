@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 import classnames from 'classnames'
 interface Props {
     children: ReactNode
-    size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '3xl'
+    size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl'
 }
 
 export function Title({ children, size  = 'xl'}: Props){

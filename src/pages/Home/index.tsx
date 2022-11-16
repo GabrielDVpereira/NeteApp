@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Title } from "_/components";
+import { Button, NavBar, Title } from "_/components";
 import { Calendar } from "_/components/Calendar";
 import { ROUTE_PATHS } from "_/constants";
 import { useAuth, useBooking, useCheckin } from "_/contexts";
@@ -23,16 +23,15 @@ export function Home(){
 
     return(
         <>
-            <Title size='3xl'>
-                Home Page
-            </Title>
-            <div className="flex">
-                <Button onClick={() => navigate(ROUTE_PATHS.checkin)}>Fazer Check-in</Button>
-                <Button onClick={() => navigate(ROUTE_PATHS.booking)}>Criar Reserva</Button>
-                <Button onClick={logout}>Logout</Button>
+            <NavBar navigate={navigate}/>
+            <div className="md:p-10 p-5 pt-3">
+                <div className="py-5">
+                    <Title size='2xl'>
+                        Calendario de uso do Carro da Ivanete
+                    </Title>
+                </div>
+                <Calendar events={events} />
             </div>
-            <Calendar events={events} />
-
         </>
     )
 }
