@@ -7,22 +7,35 @@ function formatEndDate(date: Date, duration: number){
 }
 
 function parseCheckinToEvent(checkin: Checkin): Event {
+    const endDate = formatEndDate(checkin.date, checkin.duration)
     return {
         title: checkin.username + '\nlocal: ' + checkin.local,
         start: checkin.date,
-        end: formatEndDate(checkin.date, checkin.duration),
-        color: checkin.userColor
+        end: endDate,
+        color: checkin.userColor,
+        modalTitle: 'Check-in de ' + checkin.username,
+        modalDescription: 'O check-in foi realizado em '
+            + checkin.date.toLocaleString() + ' e tem duraçao de '
+            + checkin.duration + 'h, terminando em ' + endDate.toLocaleString(),
+        local: checkin.local,
+        type: 'checkin'
     }
 }
 
 function parseBookingToEvent(booking: Booking): Event {
+    const endDate = formatEndDate(booking.date, booking.duration)
+    const status = booking.approved ? 'Aprovada' : 'Pendente'
     return {
-        title: 'Reserva de ' + booking.bookerName + `\n${
-            booking.approved? 'Aprovado' : 'Pendente'
-        }`,
+        title: 'Reserva de ' + booking.bookerName + `\n${status}`,
         start: booking.date,
-        end: formatEndDate(booking.date, booking.duration),
-        color: booking.approved ? BOOKING_COLORS.approved : BOOKING_COLORS.pending
+        end: endDate,
+        color: booking.approved ? BOOKING_COLORS.approved : BOOKING_COLORS.pending,
+        modalTitle: 'Reserva de ' + booking.bookerName,
+        modalDescription: 'A reserva foi criada para '
+            + booking.date.toLocaleString() + ' e tem duraçao de '
+            + booking.duration + 'h, terminando em ' + endDate.toLocaleString(),
+        status,
+        type: 'booking'
     }
 }
 

@@ -6,7 +6,7 @@ import { Event } from "_/models";
 
 interface Props {
     events: Array<Event>
-    onSelectEvent?: () => void
+    onSelectEvent?: (e: Event) => void
 }
 
 const localizer = momentLocalizer(moment);
