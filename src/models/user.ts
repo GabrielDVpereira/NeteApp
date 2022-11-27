@@ -22,4 +22,3 @@ export function mapResponseDbToUser(data: any): User {
         admin: data.admin
     }
 }
-
