@@ -1,5 +1,5 @@
 import { defineRandomColor, IAlertHelper } from '_/helpers';
-import { mapResponseToUser, User } from '_/models'
+import { mapResponseDbToUser, User } from '_/models'
 import { DatabaseRepository } from "_/repositories"
 
 export interface IUserService {
@@ -28,7 +28,7 @@ export class UserService implements IUserService {
     async findUser(email: string): Promise<User | undefined>{
         try {
             const userFound =  await this.userDatabaseRepository.findBy('email', email)
-            if(userFound.length) return mapResponseToUser(userFound[0])
+            if(userFound.length) return mapResponseDbToUser(userFound[0])
         } catch (error) {
             console.log(error)
             this.alertHelper.alertError("Ocorreu um erro ao buscar o usuário")
