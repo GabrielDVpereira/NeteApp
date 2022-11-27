@@ -45,12 +45,6 @@ export class AuthService implements IAuthService {
         return this.userService.createUser(responseUser)
     }
 
-    async createUserOnFirstLogin(data: any): Promise<User> {
-        const responseUser = mapAuthResponseToUser(data)
-        this.userService.createUser(responseUser)
-        return responseUser
-    }
-
     async checkAuthenticated() {
         return new Promise<User>(resolve => {
             onAuthStateChanged(this.auth, (user) => {
