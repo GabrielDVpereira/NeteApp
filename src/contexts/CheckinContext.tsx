@@ -24,18 +24,15 @@ export function CheckinContextProvider({ children, checkinService }: Props){
 
     useEffect(() => {
         if(!isAuthenticated) return
-        getAllCheckins()
+        checkinService.watchCheckins(setCheckins)
+
+        return () => checkinService.unwatchCheckins()
     }, [isAuthenticated])
 
     const createCheckin = async (checkin: Checkin) => {
         setIsCreatingCheckin(true)
         await checkinService.createCheckin(checkin)
         setIsCreatingCheckin(false)
-    }
-
-    const getAllCheckins = async () => {
-        const checkinsResponse = await checkinService.listCheckins()
-        setCheckins(checkinsResponse || [])
     }
 
     return(
