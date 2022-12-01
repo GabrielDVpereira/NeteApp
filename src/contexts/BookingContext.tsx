@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { Booking } from '_/models/booking'
+import { Booking } from '_/models'
 import { IBookingService } from '_/services'
 import { useAuth } from './AuthContext'
 
@@ -25,18 +25,15 @@ export function BookingContextProvider({ children, bookingService }: Props){
 
     useEffect(() => {
         if(!isAuthenticated) return
-        getAllBookings()
+        bookingService.watchBookings(setBookings)
+
+        return () => bookingService.unwatchBookings()
     }, [isAuthenticated])
 
     const createBooking = async (booking: Booking) => {
         setIsCreatingBooking(true)
         await bookingService.createBooking(booking)
         setIsCreatingBooking(false)
-    }
-
-    const getAllBookings = async () => {
-        const bookings = await bookingService.listBookings()
-        setBookings(bookings || [])
     }
 
     const updateBookingApproval = async(id: string, approval: boolean) => {

@@ -6,6 +6,8 @@ export interface IBookingService {
     createBooking(booking: Booking): Promise<void>
     listBookings(): Promise<Booking[] | undefined>
     updateBookingApproval(bookingId: string, approval: boolean): Promise<void>
+    watchBookings(callback: (data: any) => void): void
+    unwatchBookings(): void
 }
 
 export class BookingService implements IBookingService {
@@ -35,5 +37,16 @@ export class BookingService implements IBookingService {
 
     async updateBookingApproval(bookingId: string, approval: boolean): Promise<void> {
         await this.bookingDatabaseRepository.update<Boolean>(bookingId, "approval", approval)
+    }
+
+    watchBookings(callback: (data: Booking[]) => void){
+        this.bookingDatabaseRepository.watch<Booking>((data) => {
+            const bookings: Booking[] = data.map((item: any) => mapResponseToBooking(item))
+            callback(bookings)
+        })
+    }
+
+    unwatchBookings(){
+        this.bookingDatabaseRepository.unsubscribe()
     }
 }

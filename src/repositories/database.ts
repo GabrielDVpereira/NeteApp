@@ -1,17 +1,31 @@
-import { getFirestore, setDoc, doc, Firestore, collection, query, getDocs, QueryConstraint, where, Query, DocumentData, updateDoc  } from 'firebase/firestore';
+import { getFirestore, setDoc, doc, Firestore, collection, query, getDocs, where, Query, DocumentData, onSnapshot, Unsubscribe, updateDoc  } from 'firebase/firestore';
 
-
+type VoidCallback<T> = (data: T[]) => void
 export interface DatabaseRepository {
     getAll<T>(): Promise<T[]>
     create(data: any): Promise<void>
     findBy<T>(field: string, value: string): Promise<T[]>
     update<T>(id: string, field: string, value: T): Promise<void>
+    watch<T>(callback: VoidCallback<T>): Promise<void>
+    unsubscribe(): void
 }
 
 export class FirebaseDatabaseRepository implements DatabaseRepository {
     private readonly firestore: Firestore = getFirestore()
+    private unsub: Unsubscribe | null = null
 
     constructor( private readonly collection: string){}
+
+    async watch<T>(callback: VoidCallback<T>){
+        this.unsub = onSnapshot(collection(this.firestore, this.collection), async (snap) => {
+            const data: T[] = snap.docs.map(doc => doc.data() as T)
+            callback(data)
+        })
+    }
+
+    async unsubscribe(){
+        this.unsub?.()
+    }
 
     async getAll<T>(): Promise<T[]> {
         const docsRef = query(collection(this.firestore, this.collection));
@@ -39,7 +53,6 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
 
     async parseQueryResult<T>(query: Query<DocumentData>){
         const docsSnap = await getDocs(query)
-
         const result: T[] = []
 
         docsSnap.forEach(snap => {
