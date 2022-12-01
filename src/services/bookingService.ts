@@ -35,7 +35,7 @@ export class BookingService implements IBookingService {
     }
 
     watchBookings(callback: (data: Booking[]) => void){
-        this.bookingDatabaseRepository.watch((data: any) => {
+        this.bookingDatabaseRepository.watch<Booking>((data) => {
             const bookings: Booking[] = data.map((item: any) => mapResponseToBooking(item))
             callback(bookings)
         })

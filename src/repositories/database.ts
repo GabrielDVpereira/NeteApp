@@ -1,11 +1,11 @@
 import { getFirestore, setDoc, doc, Firestore, collection, query, getDocs, where, Query, DocumentData, onSnapshot, QuerySnapshot, Unsubscribe, DocumentSnapshot  } from 'firebase/firestore';
 
-
+type VoidCallback<T> = (data: T[]) => void
 export interface DatabaseRepository {
     getAll<T>(): Promise<T[]>
     create(data: any): Promise<void>
     findBy<T>(field: string, value: string): Promise<T[]>
-    watch(callback: (data: any) => void): void
+    watch<T>(callback: VoidCallback<T>): Promise<void>
     unsubscribe(): void
 }
 
@@ -15,16 +15,15 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
 
     constructor( private readonly collection: string){}
 
-    async watch(callback: (data: any) => void){
+    async watch<T>(callback: VoidCallback<T>){
         this.unsub = onSnapshot(collection(this.firestore, this.collection), async (snap) => {
-            const data: any[] = snap.docs.map(doc => doc.data())
+            const data: T[] = snap.docs.map(doc => doc.data() as T)
             callback(data)
         })
     }
 
     async unsubscribe(){
-        if(this.unsub === null) return
-        this.unsub()
+        this.unsub?.()
     }
 
     async getAll<T>(): Promise<T[]> {
