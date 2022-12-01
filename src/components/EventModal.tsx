@@ -7,10 +7,15 @@ interface Props{
     event?: Event
     openModal: boolean
     closeModal: () => void
+    updateAproval: (id: string, approval: boolean) => Promise<void>
 }
 
-export function EventModal({event, openModal, closeModal} : Props){
+export function EventModal({event, openModal, closeModal, updateAproval} : Props){
   const { isAdmin } = useAuth()
+  const buttonOnClick = async (approval: boolean) => {
+    await updateAproval(event!.id, approval)
+    closeModal()
+  }
     return (
         openModal ? (
             <>
@@ -47,10 +52,9 @@ export function EventModal({event, openModal, closeModal} : Props){
                     {/*footer*/}
                     <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                       {event?.type === 'booking' && isAdmin && event.status === 'Pendente' && (
-                        // TODO: create function to actualy aprove and reject bookings
                         <>
-                          <Button styleType="success">Aprovar</Button>
-                          <Button >Recusar</Button>
+                          <Button styleType="success" onClick={() => buttonOnClick(true)}>Aprovar</Button>
+                          <Button onClick={() => buttonOnClick(false)}>Recusar</Button>
                         </>
                       )}
                       <button

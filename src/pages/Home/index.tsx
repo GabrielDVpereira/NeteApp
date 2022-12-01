@@ -15,7 +15,7 @@ export function Home(){
     const [events, setEvents] = useState<Array<Event>>([])
 
     const { checkins } = useCheckin()
-    const { bookings } = useBooking()
+    const { bookings, updateBookingApproval } = useBooking()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -33,6 +33,7 @@ export function Home(){
                 openModal={openModal}
                 closeModal={() => setOpenModal(false)}
                 event={selectedEvent}
+                updateAproval={updateBookingApproval}
             />
             <NavBar navigate={navigate}/>
             <div className="md:p-10 p-5 pt-3">

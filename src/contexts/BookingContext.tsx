@@ -12,6 +12,7 @@ interface ContextData {
     bookings: Array<Booking>
     createBooking(booking: Booking): Promise<void>
     isCreatingBooking: boolean
+    updateBookingApproval(id: string, approval: boolean): Promise<void>
 }
 
 const BookingContext = createContext<ContextData>({} as ContextData)
@@ -31,15 +32,19 @@ export function BookingContextProvider({ children, bookingService }: Props){
         setIsCreatingBooking(true)
         await bookingService.createBooking(booking)
         setIsCreatingBooking(false)
-    } 
+    }
 
     const getAllBookings = async () => {
         const bookings = await bookingService.listBookings()
         setBookings(bookings || [])
-    } 
+    }
+
+    const updateBookingApproval = async(id: string, approval: boolean) => {
+        await bookingService.updateBookingApproval(id, approval)
+    }
 
     return(
-        <BookingContext.Provider value={{ bookings, createBooking , isCreatingBooking}}>
+        <BookingContext.Provider value={{ bookings, createBooking , isCreatingBooking, updateBookingApproval}}>
             {children}
         </BookingContext.Provider>
     )

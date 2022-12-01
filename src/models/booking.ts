@@ -1,5 +1,6 @@
 
 export interface Booking {
+    id?:string
     date: Date
     duration: number
     bookerName: string
@@ -9,6 +10,7 @@ export interface Booking {
 
 export function mapResponseToBooking(data: any): Booking{
     return {
+        id: data.id,
         date: data.date.toDate(),
         duration: data.duration,
         bookerName: data.bookerName,

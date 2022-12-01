@@ -18,7 +18,8 @@ function parseCheckinToEvent(checkin: Checkin): Event {
             + checkin.date.toLocaleString() + ' e tem duraçao de '
             + checkin.duration + 'h, terminando em ' + endDate.toLocaleString(),
         local: checkin.local,
-        type: 'checkin'
+        type: 'checkin',
+        id: checkin.id!
     }
 }
 
@@ -35,7 +36,8 @@ function parseBookingToEvent(booking: Booking): Event {
             + booking.date.toLocaleString() + ' e tem duraçao de '
             + booking.duration + 'h, terminando em ' + endDate.toLocaleString(),
         status,
-        type: 'booking'
+        type: 'booking',
+        id: booking.id!
     }
 }
 

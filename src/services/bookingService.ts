@@ -5,6 +5,7 @@ import { DatabaseRepository } from "_/repositories"
 export interface IBookingService {
     createBooking(booking: Booking): Promise<void>
     listBookings(): Promise<Booking[] | undefined>
+    updateBookingApproval(bookingId: string, approval: boolean): Promise<void>
 }
 
 export class BookingService implements IBookingService {
@@ -30,5 +31,9 @@ export class BookingService implements IBookingService {
             console.error(err)
             this.alertHelper.alertError("Não foi possível recuperar as reservas.")
         }
+    }
+
+    async updateBookingApproval(bookingId: string, approval: boolean): Promise<void> {
+        await this.bookingDatabaseRepository.update<Boolean>(bookingId, "approval", approval)
     }
 }

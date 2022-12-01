@@ -1,4 +1,5 @@
 export interface Checkin {
+    id?:string
     date: Date
     username: string
     userColor: string
@@ -9,6 +10,7 @@ export interface Checkin {
 
 export function mapResponseToCheckin(data: any): Checkin{
     return {
+        id: data.id,
         date: data.date.toDate(),
         username: data.username,
         userColor: data.userColor,
