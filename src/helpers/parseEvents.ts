@@ -1,4 +1,4 @@
-import { BOOKING_COLORS } from '_/constants';
+import { BOOKING_COLORS, APPROVAL_STATE } from '_/constants';
 import { Booking, Checkin, Event } from '_/models'
 import { parseHoursToMilisseconds } from '_/util';
 
@@ -23,19 +23,31 @@ function parseCheckinToEvent(checkin: Checkin): Event {
     }
 }
 
+const bookingColor = {
+    [APPROVAL_STATE.approved]: BOOKING_COLORS.approved,
+    [APPROVAL_STATE.pending]: BOOKING_COLORS.pending,
+    [APPROVAL_STATE.rejected]: BOOKING_COLORS.rejected
+}
+
+export const approvalText = {
+    [APPROVAL_STATE.approved]: 'Aprovada',
+    [APPROVAL_STATE.pending]: 'Pendente',
+    [APPROVAL_STATE.rejected]: 'Rejeitada'
+}
+
 function parseBookingToEvent(booking: Booking): Event {
     const endDate = formatEndDate(booking.date, booking.duration)
-    const status = booking.approved ? 'Aprovada' : 'Pendente'
+    const textStatus = approvalText[booking.approval]
     return {
-        title: 'Reserva de ' + booking.bookerName + `\n${status}`,
+        title: 'Reserva de ' + booking.bookerName + `\n${textStatus}`,
         start: booking.date,
         end: endDate,
-        color: booking.approved ? BOOKING_COLORS.approved : BOOKING_COLORS.pending,
+        color: bookingColor[booking.approval],
         modalTitle: 'Reserva de ' + booking.bookerName,
         modalDescription: 'A reserva foi criada para '
             + booking.date.toLocaleString() + ' e tem duraçao de '
             + booking.duration + 'h, terminando em ' + endDate.toLocaleString(),
-        status,
+        status: booking.approval,
         type: 'booking',
         id: booking.id!
     }

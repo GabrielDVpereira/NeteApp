@@ -1,9 +1,9 @@
+import { APPROVAL_STATE } from "_/constants"
 import { UpdateObj } from "_/util"
-
-export interface Approval extends UpdateObj<boolean> {
-    approved : boolean
+export interface Approval extends UpdateObj<string> {
+    approval : APPROVAL_STATE
 }
 
-export function parseApprovalObj(approved: boolean): Approval{
-    return { approved }
+export function parseApprovalObj(approval: APPROVAL_STATE): Approval{
+    return { approval }
 }

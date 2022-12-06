@@ -1,5 +1,6 @@
-import { BOOKING_COLORS } from "_/constants"
+import { APPROVAL_STATE } from "_/constants"
 import { useAuth } from "_/contexts"
+import { approvalText } from "_/helpers"
 import { Event } from "_/models"
 import { Button } from "./Button"
 
@@ -7,12 +8,12 @@ interface Props{
     event?: Event
     openModal: boolean
     closeModal: () => void
-    updateAproval: (id: string, approval: boolean) => Promise<void>
+    updateAproval: (id: string, approval: APPROVAL_STATE) => Promise<void>
 }
 
 export function EventModal({event, openModal, closeModal, updateAproval} : Props){
   const { isAdmin } = useAuth()
-  const buttonOnClick = async (approval: boolean) => {
+  const buttonOnClick = async (approval: APPROVAL_STATE) => {
     await updateAproval(event!.id, approval)
     closeModal()
   }
@@ -44,17 +45,17 @@ export function EventModal({event, openModal, closeModal, updateAproval} : Props
                       <p className="my-4 text-slate-500 text-lg leading-relaxed">
                         {event?.type === 'checkin' ?
                           (<><b>Destino:</b> {event?.local}<br/></>)
-                          : (<><b>Status:</b> {event?.status}<br/></>)
+                          : event?.status && (<><b>Status:</b> {approvalText[event.status]}<br/></>)
                         }
                         {event?.modalDescription}
                       </p>
                     </div>
                     {/*footer*/}
                     <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                      {event?.type === 'booking' && isAdmin && event.status === 'Pendente' && (
+                      {event?.type === 'booking' && isAdmin && event.status === APPROVAL_STATE.pending && (
                         <>
-                          <Button styleType="success" onClick={() => buttonOnClick(true)}>Aprovar</Button>
-                          <Button onClick={() => buttonOnClick(false)}>Recusar</Button>
+                          <Button styleType="success" onClick={() => buttonOnClick(APPROVAL_STATE.approved)}>Aprovar</Button>
+                          <Button onClick={() => buttonOnClick(APPROVAL_STATE.rejected)}>Recusar</Button>
                         </>
                       )}
                       <button

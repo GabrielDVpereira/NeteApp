@@ -36,7 +36,7 @@ export class BookingService implements IBookingService {
     }
 
     async updateBookingApproval(bookingId: string, approval: Approval): Promise<void> {
-        await this.bookingDatabaseRepository.update<boolean>(bookingId, approval)
+        await this.bookingDatabaseRepository.update<string>(bookingId, approval)
     }
 
     watchBookings(callback: (data: Booking[]) => void){

@@ -1,4 +1,4 @@
-import { type } from "os"
+import { APPROVAL_STATE } from "_/constants"
 
 export interface Event {
     id: string
@@ -10,6 +10,5 @@ export interface Event {
     modalDescription: string
     type: 'checkin' | 'booking'
     local?: string
-    status?: 'Pendente' | 'Aprovada'
-
+    status?: APPROVAL_STATE
 }

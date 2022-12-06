@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { APPROVAL_STATE } from '_/constants'
 import { parseApprovalObj } from '_/helpers'
 import { Booking } from '_/models'
 import { IBookingService } from '_/services'
@@ -13,7 +14,7 @@ interface ContextData {
     bookings: Array<Booking>
     createBooking(booking: Booking): Promise<void>
     isCreatingBooking: boolean
-    updateBookingApproval(id: string, approval: boolean): Promise<void>
+    updateBookingApproval(id: string, approval: APPROVAL_STATE): Promise<void>
 }
 
 const BookingContext = createContext<ContextData>({} as ContextData)
@@ -37,7 +38,7 @@ export function BookingContextProvider({ children, bookingService }: Props){
         setIsCreatingBooking(false)
     }
 
-    const updateBookingApproval = async(id: string, value: boolean) => {
+    const updateBookingApproval = async(id: string, value: APPROVAL_STATE) => {
         const approval = parseApprovalObj(value)
         await bookingService.updateBookingApproval(id, approval)
     }
