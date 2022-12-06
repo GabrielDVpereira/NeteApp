@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { parseApprovalObj } from '_/helpers'
 import { Booking } from '_/models'
 import { IBookingService } from '_/services'
 import { useAuth } from './AuthContext'
@@ -36,7 +37,8 @@ export function BookingContextProvider({ children, bookingService }: Props){
         setIsCreatingBooking(false)
     }
 
-    const updateBookingApproval = async(id: string, approval: boolean) => {
+    const updateBookingApproval = async(id: string, value: boolean) => {
+        const approval = parseApprovalObj(value)
         await bookingService.updateBookingApproval(id, approval)
     }
 

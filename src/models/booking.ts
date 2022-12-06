@@ -7,7 +7,6 @@ export interface Booking {
     approved: boolean
 }
 
-
 export function mapResponseToBooking(data: any): Booking{
     return {
         id: data.id,

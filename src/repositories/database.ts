@@ -1,11 +1,12 @@
-import { getFirestore, setDoc, doc, Firestore, collection, query, getDocs, where, Query, DocumentData, onSnapshot, Unsubscribe, updateDoc  } from 'firebase/firestore';
+import { getFirestore, setDoc, doc, Firestore, collection, query, getDocs, where, Query, DocumentData, onSnapshot, Unsubscribe, updateDoc, QueryDocumentSnapshot  } from 'firebase/firestore';
+import { UpdateObj } from '_/util';
 
 type VoidCallback<T> = (data: T[]) => void
 export interface DatabaseRepository {
     getAll<T>(): Promise<T[]>
     create(data: any): Promise<void>
     findBy<T>(field: string, value: string): Promise<T[]>
-    update<T>(id: string, field: string, value: T): Promise<void>
+    update<T>(id: string, updateObject: UpdateObj<T>): Promise<void>
     watch<T>(callback: VoidCallback<T>): Promise<void>
     unsubscribe(): void
 }
@@ -18,7 +19,7 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
 
     async watch<T>(callback: VoidCallback<T>){
         this.unsub = onSnapshot(collection(this.firestore, this.collection), async (snap) => {
-            const data: T[] = snap.docs.map(doc => doc.data() as T)
+            const data: T[] = snap.docs.map(doc => this.parseSnap<T>(doc))
             callback(data)
         })
     }
@@ -43,12 +44,10 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
         return await this.parseQueryResult(docsRef)
     }
 
-    async update<T>(id: string, field: string, value: T): Promise<void>{
+    async update<T>(id: string, updateObject: UpdateObj<T>): Promise<void>{
         const docRef = doc(collection(this.firestore, this.collection), id);
 
-        await updateDoc(docRef, {
-            [field]: value
-        });
+        await updateDoc(docRef, updateObject);
     }
 
     async parseQueryResult<T>(query: Query<DocumentData>){
@@ -56,9 +55,13 @@ export class FirebaseDatabaseRepository implements DatabaseRepository {
         const result: T[] = []
 
         docsSnap.forEach(snap => {
-            const data = { ...snap.data(), id: snap.id } as T
+            const data = this.parseSnap<T>(snap)
             result.push(data)
         })
         return result
+    }
+
+    parseSnap<T>(snap: QueryDocumentSnapshot<DocumentData>): T{
+        return { ...snap.data(), id: snap.id } as T
     }
 }
