@@ -6,7 +6,7 @@ import { IUserService } from "./userService";
 
 export interface IAuthService {
     signIn: () => Promise<User | undefined>,
-    checkAuthenticated: () => Promise<User>,
+    checkAuthenticated: () => Promise<User | undefined>,
     logout: () => Promise<void>
 }
 
@@ -22,7 +22,7 @@ export class AuthService implements IAuthService {
     async signIn(): Promise<User | undefined> {
         try {
             const credentials = await this.signInWithGoogle()
-            const existingUser = await this.checkUserExists(credentials.user.email || '')
+            const existingUser = await this.checkUserExists(credentials.user.email)
             if(existingUser) return existingUser
 
             return await this.createUser(credentials.user)
@@ -36,7 +36,8 @@ export class AuthService implements IAuthService {
         return await signInWithPopup(this.auth, this.provider)
     }
 
-    async checkUserExists(email: string): Promise<User | undefined>  {
+    async checkUserExists(email: string | null): Promise<User | undefined>  {
+        if(!email) return
         return await this.userService.findUser(email)
     }
 
@@ -46,10 +47,10 @@ export class AuthService implements IAuthService {
     }
 
     async checkAuthenticated() {
-        return new Promise<User>(resolve => {
-            onAuthStateChanged(this.auth, (user) => {
+        return new Promise<User | undefined>(resolve => {
+            onAuthStateChanged(this.auth, async (user) => {
                 if(!user) return resolve({} as User)
-                resolve(mapAuthResponseToUser(user))
+                resolve(await this.checkUserExists(user.email))
             });
         })
     }
