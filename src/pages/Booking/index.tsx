@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useAuth, useBooking } from "_/contexts";
 import { parseDateToLocaleString } from "_/util";
 import { useNavigate } from "react-router-dom";
+import { parseBookingToZapLink } from "_/helpers";
+import { Booking as BookingModel} from "_/models";
 import { ROUTE_PATHS } from "_/constants";
 
 export function Booking(){
@@ -24,9 +26,11 @@ export function Booking(){
             bookerName: user.name,
             approved: false
         }
-
         createBooking(bookingData)
-        return navigate(ROUTE_PATHS.home)
+
+        const link = parseBookingToZapLink(bookingData as BookingModel)
+        window.open(link, "_blank")
+        navigate(ROUTE_PATHS.home)
     }
     return (
         <PageTemplate
