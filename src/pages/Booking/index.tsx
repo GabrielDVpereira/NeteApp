@@ -6,7 +6,7 @@ import { parseDateToLocaleString } from "_/util";
 import { useNavigate } from "react-router-dom";
 import { parseBookingToZapLink } from "_/helpers";
 import { Booking as BookingModel} from "_/models";
-import { ROUTE_PATHS } from "_/constants";
+import { ROUTE_PATHS, APPROVAL_STATE } from "_/constants";
 
 export function Booking(){
     const [date, setDate] = useState<Date>(new Date())
@@ -24,7 +24,7 @@ export function Booking(){
             date,
             duration,
             bookerName: user.name,
-            approved: false
+            approval: APPROVAL_STATE.pending
         }
         createBooking(bookingData)
 
@@ -34,6 +34,7 @@ export function Booking(){
     }
     return (
         <PageTemplate
+            navigate={navigate}
             imagePath={bookingImg}
             pageTitle="Faça sua reserva"
         >

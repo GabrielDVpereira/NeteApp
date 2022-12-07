@@ -1,38 +1,52 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Title } from "_/components";
+import { NavBar, Title } from "_/components";
 import { Calendar } from "_/components/Calendar";
-import { ROUTE_PATHS } from "_/constants";
-import { useAuth, useBooking, useCheckin } from "_/contexts";
+import { EventModal } from "_/components/EventModal";
+import { useBooking, useCheckin } from "_/contexts";
 import { parseEvents } from "_/helpers";
 import { Event } from "_/models";
 
 export function Home(){
+    const [openModal, setOpenModal] = useState(false)
+    const [selectedEvent, setSelectedEvent] = useState({} as Event)
+
     const [events, setEvents] = useState<Array<Event>>([])
 
     const { checkins } = useCheckin()
-    const { bookings } = useBooking()
+    const { bookings, updateBookingApproval } = useBooking()
     const navigate = useNavigate()
-
-    const { logout } = useAuth()
 
     useEffect(() => {
         setEvents(parseEvents(checkins, bookings))
     }, [checkins, bookings])
 
+    const onSelectEvent = (event: Event) => {
+        setSelectedEvent(event)
+        setOpenModal(true)
+    }
+
     return(
         <>
-            <Title size='3xl'>
-                Home Page
-            </Title>
-            <div className="flex">
-                <Button onClick={() => navigate(ROUTE_PATHS.checkin)}>Fazer Check-in</Button>
-                <Button onClick={() => navigate(ROUTE_PATHS.booking)}>Criar Reserva</Button>
-                <Button onClick={logout}>Logout</Button>
+            <EventModal
+                openModal={openModal}
+                closeModal={() => setOpenModal(false)}
+                event={selectedEvent}
+                updateAproval={updateBookingApproval}
+            />
+            <NavBar navigate={navigate}/>
+            <div className="md:p-10 p-5 pt-3">
+                <div className="py-5">
+                    <Title size='2xl'>
+                        Calendario de uso do Carro da Ivanete
+                    </Title>
+                </div>
+                <Calendar
+                    events={events}
+                    onSelectEvent={onSelectEvent}
+                />
             </div>
-            <Calendar events={events} />
-
         </>
     )
 }

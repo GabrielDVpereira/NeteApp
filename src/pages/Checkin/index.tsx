@@ -33,6 +33,7 @@ export function Checkin(){
 
         const checkinData = {
             username: user.name,
+            userColor: user.color,
             date: new Date(),
             duration,
             local
@@ -45,6 +46,7 @@ export function Checkin(){
 
     return(
         <PageTemplate
+            navigate={navigate}
             imagePath={checkinImg}
             pageTitle="Check-in"
         >

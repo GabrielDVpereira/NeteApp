@@ -10,6 +10,7 @@ interface Props{
 
 interface ContextData {
     user: User
+    isAdmin: boolean
     isAuthenticated: boolean
     signIn: ()=> Promise<void>
     loadingAuth: boolean
@@ -23,6 +24,7 @@ export function AuthContextProvider({ authService, children } : Props) {
     const [loadingAuth, setLoadingAuth] = useState(true)
 
     const isAuthenticated = !!user.email
+    const isAdmin = user.admin
 
     useEffect(() => {
         checkAuthenticated()
@@ -31,7 +33,9 @@ export function AuthContextProvider({ authService, children } : Props) {
     const checkAuthenticated = async () => {
         setLoadingAuth(true)
         const userResponse = await authService.checkAuthenticated()
-        setUser(userResponse)
+        if (userResponse){
+            setUser(userResponse)
+        }
         setLoadingAuth(false)
     }
 
@@ -51,6 +55,7 @@ export function AuthContextProvider({ authService, children } : Props) {
             user,
             signIn,
             isAuthenticated,
+            isAdmin,
             loadingAuth,
             logout
         }}>
