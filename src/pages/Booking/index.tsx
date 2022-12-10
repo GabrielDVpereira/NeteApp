@@ -5,10 +5,10 @@ import { useAuth, useBooking } from "_/contexts";
 import { parseDateToLocaleString } from "_/util";
 import { useNavigate } from "react-router-dom";
 import { parseBookingToZapLink } from "_/helpers";
-import { Booking as BookingModel} from "_/models";
-import { ROUTE_PATHS, APPROVAL_STATE } from "_/constants";
+import { Booking } from "_/models";
+import { ROUTE_PATHS } from "_/constants";
 
-export function Booking(){
+export function BookingPage(){
     const [date, setDate] = useState<Date>(new Date())
     const [duration, setDuration] = useState<number>(1)
     const { createBooking, isCreatingBooking } = useBooking()
@@ -20,15 +20,11 @@ export function Booking(){
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const bookingData = {
-            date,
-            duration,
-            bookerName: user.name,
-            approval: APPROVAL_STATE.pending
-        }
-        createBooking(bookingData)
 
-        const link = parseBookingToZapLink(bookingData as BookingModel)
+        const booking = Booking.createNewBooking(date, duration, user.name)
+        createBooking(booking)
+
+        const link = parseBookingToZapLink(booking)
         window.open(link, "_blank")
         navigate(ROUTE_PATHS.home)
     }

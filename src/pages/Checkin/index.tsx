@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { Input, Title, Text, Button, PageTemplate, Form } from '_/components'
+import { Input, Text, Button, PageTemplate, Form } from '_/components'
 import { useAuth, useCheckin } from '_/contexts'
 import checkinImg from "_/assets/checkin.png"
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_PATHS } from '_/constants'
+import { Checkin } from '_/models'
 
 
-export function Checkin(){
+export function CheckinPage(){
     const [local, setLocal] = useState('')
     const [duration, setDuration] = useState(1)
     const [errorMessage, setErrorMessage] = useState('')
@@ -31,15 +32,8 @@ export function Checkin(){
             return
         }
 
-        const checkinData = {
-            username: user.name,
-            userColor: user.color,
-            date: new Date(),
-            duration,
-            local
-        }
-
-        createCheckin(checkinData)
+        const checkin = Checkin.createNewCheckin(local, duration, user)
+        createCheckin(checkin)
         return navigate(ROUTE_PATHS.home)
     }
 

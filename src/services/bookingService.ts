@@ -1,5 +1,5 @@
 import { Approval, IAlertHelper } from "_/helpers"
-import { Booking, mapResponseToBooking } from "_/models"
+import { Booking } from "_/models"
 import { DatabaseRepository } from "_/repositories"
 
 export interface IBookingService {
@@ -18,7 +18,7 @@ export class BookingService implements IBookingService {
 
     async createBooking(booking: Booking): Promise<void> {
         try {
-            await this.bookingDatabaseRepository.create(booking);
+            await this.bookingDatabaseRepository.create(booking.getDBFormat());
             this.alertHelper.alertSucess("Reserva realizada com sucesso!")
         } catch(err){
             console.error(err)
@@ -28,7 +28,7 @@ export class BookingService implements IBookingService {
     async listBookings(): Promise<Booking[] | undefined> {
         try {
             const bookings = await this.bookingDatabaseRepository.getAll<Booking>()
-            return bookings.map(booking => mapResponseToBooking(booking))
+            return bookings.map(booking => Booking.mapResponseToBooking(booking))
         } catch(err){
             console.error(err)
             this.alertHelper.alertError("Não foi possível recuperar as reservas.")
@@ -41,7 +41,7 @@ export class BookingService implements IBookingService {
 
     watchBookings(callback: (data: Booking[]) => void){
         this.bookingDatabaseRepository.watch<Booking>((data) => {
-            const bookings: Booking[] = data.map((item: any) => mapResponseToBooking(item))
+            const bookings: Booking[] = data.map((item: any) => Booking.mapResponseToBooking(item))
             callback(bookings)
         })
     }

@@ -5,7 +5,6 @@ import { NavBar, Title } from "_/components";
 import { Calendar } from "_/components/Calendar";
 import { EventModal } from "_/components/EventModal";
 import { useBooking, useCheckin } from "_/contexts";
-import { parseEvents } from "_/helpers";
 import { Event } from "_/models";
 
 export function Home(){
@@ -19,7 +18,7 @@ export function Home(){
     const navigate = useNavigate()
 
     useEffect(() => {
-        setEvents(parseEvents(checkins, bookings))
+        setEvents([...checkins, ...bookings])
     }, [checkins, bookings])
 
     const onSelectEvent = (event: Event) => {

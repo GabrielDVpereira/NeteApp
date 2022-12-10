@@ -4,6 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
 import { Event } from "_/models";
 import { APPROVAL_STATE } from "_/constants";
+import { isBooking } from "_/helpers";
 
 interface Props {
     events: Array<Event>
@@ -17,7 +18,7 @@ export function Calendar({ events, onSelectEvent }: Props){
     const isMonth = mode === 'month';
 
     const eventStyleGetter = (event: any) => {
-        const lineThrough = event.type === 'booking' && event.status === APPROVAL_STATE.rejected ? {textDecoration: 'line-through'} : {}
+        const lineThrough = isBooking(event) && event.approval === APPROVAL_STATE.rejected ? {textDecoration: 'line-through'} : {}
 
         const style = {
             backgroundColor: event.color,
@@ -40,5 +41,5 @@ export function Calendar({ events, onSelectEvent }: Props){
         style={isMonth ? { height: '100vh' } : {}}
         onSelectEvent={onSelectEvent}
         eventPropGetter={eventStyleGetter}
-        />
+    />
 }

@@ -1,5 +1,5 @@
 import { IAlertHelper } from "_/helpers"
-import { Checkin, mapResponseToCheckin } from "_/models"
+import { Checkin } from "_/models"
 import { DatabaseRepository } from "_/repositories"
 
 export interface ICheckinService {
@@ -17,7 +17,7 @@ export class CheckinService implements ICheckinService {
 
     async createCheckin(checkin: Checkin): Promise<void> {
         try {
-            await this.checkinDatabaseRepository.create(checkin);
+            await this.checkinDatabaseRepository.create(checkin.getDBFormat());
             this.alertHelper.alertSucess("Checkin realizado com sucesso!")
         } catch(err){
             console.error(err)
@@ -27,7 +27,7 @@ export class CheckinService implements ICheckinService {
     async listCheckins(): Promise<Checkin[] | undefined> {
         try {
             const checkins = await this.checkinDatabaseRepository.getAll<Checkin>()
-            return checkins.map(checkin => mapResponseToCheckin(checkin))
+            return checkins.map(checkin => Checkin.mapResponseToCheckin(checkin))
         } catch(err){
             console.error(err)
             this.alertHelper.alertError("Não foi possível recuperar os checkins.")
@@ -36,7 +36,7 @@ export class CheckinService implements ICheckinService {
 
     watchCheckins(callback: (data: Checkin[]) => void){
         this.checkinDatabaseRepository.watch((data: any) => {
-            const checkins: Checkin[] = data.map((item: any) => mapResponseToCheckin(item))
+            const checkins: Checkin[] = data.map((item: any) => Checkin.mapResponseToCheckin(item))
             callback(checkins)
         })
     }
