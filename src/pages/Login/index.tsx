@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { Button, Text, Title } from "_/components";
+import { Button, Image, Text, Title } from "_/components";
 import { useAuth } from "_/contexts";
 import { FaGoogle } from "react-icons/fa"
 import loginImg from "_/assets/login.png"
@@ -12,7 +12,7 @@ export function Login(){
 
     return (
         <div className="flex flex-col items-center p-5">
-            <img src={loginImg} width={400} />
+            <Image src={loginImg} width={400} />
             <Title size="3xl">Nete App</Title>
             <Text className="mb-5 text-center">Controle de uso do carro da Ivanete</Text>
             <Button onClick={() => signIn()}>

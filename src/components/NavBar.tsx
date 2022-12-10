@@ -36,12 +36,12 @@ export function NavBar( {navigate }: Props){
                 </div>
 
                 <nav className="hidden space-x-10 md:flex">
-                    <a onClick={goToCheckin} className="text-base font-medium text-gray-500 hover:text-gray-900">Fazer check-in</a>
-                    <a onClick={goToBooking} className="text-base font-medium text-gray-500 hover:text-gray-900">Criar Reserva</a>
+                    <button onClick={goToCheckin} className="text-base font-medium text-gray-500 hover:text-gray-900">Fazer check-in</button>
+                    <button onClick={goToBooking} className="text-base font-medium text-gray-500 hover:text-gray-900">Criar Reserva</button>
 
                 </nav>
                 <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-                    <a onClick={logout} className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-primary px-4 py-2 text-base font-medium text-white shadow-sm hover:primary-dark">Logout</a>
+                    <button onClick={logout} className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-primary px-4 py-2 text-base font-medium text-white shadow-sm hover:primary-dark">Logout</button>
                 </div>
 
                 </div>
@@ -66,17 +66,17 @@ export function NavBar( {navigate }: Props){
                     </div>
                     <div className="mt-6">
                         <nav className="grid gap-y-8">
-                            <a onClick={goToCheckin} className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+                            <button onClick={goToCheckin} className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
                                 <span className="ml-3 text-base font-medium text-gray-900">Fazer Check-in</span>
-                            </a>
+                            </button>
 
-                            <a onClick={goToBooking} className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+                            <button onClick={goToBooking} className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
                                 <span className="ml-3 text-base font-medium text-gray-900">Fazer Reserva</span>
-                            </a>
+                            </button>
 
-                            <a onClick={logout} className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+                            <button onClick={logout} className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
                                 <span className="ml-3 text-base font-medium text-gray-900">Logout</span>
-                            </a>
+                            </button>
 
                         </nav>
                     </div>
