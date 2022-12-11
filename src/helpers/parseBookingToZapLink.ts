@@ -6,7 +6,7 @@ export function parseBookingToZapLink(booking: Booking){
         booking.start.toLocaleString()
     } por ${booking.duration} hora${booking.duration > 1 ? 's' : ''}?
     Confirma lá no NeteApp?
-    ${process.env.REACT_APP_NETE_APP_LINK}`
+    ${window.origin}`
 
     return ZAP_LINK + `&text=${baseMessage.replace(' ', '%20')}`
 }
