@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Loading } from '_/components'
 import { ROUTE_PATHS } from '_/constants'
 import { useAuth } from '_/contexts'
-import { Checkin, Home, Login, Booking, NotFound } from '_/pages'
+import { CheckinPage, Home, Login, BookingPage, NotFound } from '_/pages'
 import { Protected } from "./protected.route"
 
 export function AppRoutes(){
@@ -20,21 +20,21 @@ export function AppRoutes(){
             </Protected>
           } />
           <Route path={ ROUTE_PATHS.login } element={<Login />} />
-          <Route 
+          <Route
             path={ROUTE_PATHS.checkin}
             element={
               <Protected>
-                <Checkin />
+                <CheckinPage />
               </Protected>
             }/>
-          <Route 
+          <Route
             path={ROUTE_PATHS.booking}
             element={
               <Protected>
-                <Booking />
+                <BookingPage />
               </Protected>
             }/>
-          <Route 
+          <Route
             path="*"
             element={ <NotFound /> }
           />

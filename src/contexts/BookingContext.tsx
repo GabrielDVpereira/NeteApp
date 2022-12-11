@@ -30,7 +30,7 @@ export function BookingContextProvider({ children, bookingService }: Props){
         bookingService.watchBookings(setBookings)
 
         return () => bookingService.unwatchBookings()
-    }, [isAuthenticated])
+    }, [isAuthenticated, bookingService])
 
     const createBooking = async (booking: Booking) => {
         setIsCreatingBooking(true)

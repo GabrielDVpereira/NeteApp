@@ -27,7 +27,7 @@ export function CheckinContextProvider({ children, checkinService }: Props){
         checkinService.watchCheckins(setCheckins)
 
         return () => checkinService.unwatchCheckins()
-    }, [isAuthenticated])
+    }, [isAuthenticated, checkinService])
 
     const createCheckin = async (checkin: Checkin) => {
         setIsCreatingCheckin(true)

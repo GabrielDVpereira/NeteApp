@@ -27,28 +27,30 @@ export function AuthContextProvider({ authService, children } : Props) {
     const isAdmin = user.admin
 
     useEffect(() => {
-        checkAuthenticated()
-    }, [])
-
-    const checkAuthenticated = async () => {
-        setLoadingAuth(true)
-        const userResponse = await authService.checkAuthenticated()
-        if (userResponse){
-            setUser(userResponse)
+        const checkAuthenticated = async () => {
+            setLoadingAuth(true)
+            const userResponse = await authService.checkAuthenticated()
+            if (userResponse){
+                setUser(userResponse)
+            }
+            setLoadingAuth(false)
         }
-        setLoadingAuth(false)
-    }
+
+        checkAuthenticated()
+    }, [authService])
+
+
 
     const signIn = useCallback(async () => {
         const userResponse = await authService.signIn()
         if(!userResponse) return
         setUser(userResponse)
-    }, [])
+    }, [authService])
 
     const logout = useCallback(() => {
         authService.logout()
         setUser({} as User)
-    }, [])
+    }, [authService])
 
     return (
         <AuthContext.Provider value={{
