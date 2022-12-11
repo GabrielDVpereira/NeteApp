@@ -1,16 +1,21 @@
 # .github/workflows/netlify.yml
 name: Build and Deploy to Netlify
 on:
-  push: 
+  push:
     branches: main
   pull_request:
 jobs:
   build:
     runs-on: ubuntu-18.04
+
     steps:
       - uses: actions/checkout@v2
 
-      # ( Build to ./dist or other directory... )
+      - name: Build app
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.x
+      - run: npm run build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
