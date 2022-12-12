@@ -14,26 +14,26 @@ export interface CheckinDB {
 export class Checkin extends Event {
     constructor(
         public readonly local: string,
-        start: Date,
+        date: Date,
         duration: number,
         username: string,
         color: string,
         id?: string
     ){
-        const title = `${username} - ${local}`
-        super(start, duration, username, color, title, id)
+        const calendarTitle = `${username} - ${local}`
+        super(date, duration, username, color, calendarTitle, id)
         this.generateTexts()
     }
 
     generateTexts(){
-        this.modalTitle = `${CHECKIN_TITLE} ${this.username}`
+        this.title = `${CHECKIN_TITLE} ${this.username}`
         this.description = `${CHECKIN_DESCRIPTION} ${this.description}`
     }
 
     getDBFormat(): CheckinDB {
         return {
             local: this.local,
-            date: this.start,
+            date: this.date,
             duration: this.duration,
             username: this.username,
             color: this.color

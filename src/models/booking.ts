@@ -15,26 +15,26 @@ export interface BookingDB {
 export class Booking extends Event {
     constructor(
         public readonly approval: APPROVAL_STATE,
-        start: Date,
+        date: Date,
         duration: number,
         username: string,
         id?: string
     ){
         const color = approvalColor[approval]
-        const title = `${BOOKING_TITLE} ${username} - ${approvalText[approval]}`
-        super(start, duration, username, color, title, id)
+        const calendarTitle = `${BOOKING_TITLE} ${username} - ${approvalText[approval]}`
+        super(date, duration, username, color, calendarTitle, id)
         this.generateTexts()
     }
 
     generateTexts(){
-        this.modalTitle = `${BOOKING_TITLE} ${this.username}`
+        this.title = `${BOOKING_TITLE} ${this.username}`
         this.description = `${BOOKING_DESCRIPTION} ${this.description}`
     }
 
     getDBFormat() : BookingDB {
         return {
             approval: this.approval,
-            date: this.start,
+            date: this.date,
             duration: this.duration,
             username: this.username
         }
