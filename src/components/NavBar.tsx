@@ -36,7 +36,7 @@ export function NavBar( {navigate }: Props){
                 </div>
 
                 <nav className="hidden space-x-10 md:flex">
-                    <button onClick={goToCheckin} className="text-base font-medium text-gray-500 hover:text-gray-900">Fazer check-in</button>
+                    <button onClick={goToCheckin} className="text-base font-medium text-gray-500 hover:text-gray-900">Fazer Check-in</button>
                     <button onClick={goToBooking} className="text-base font-medium text-gray-500 hover:text-gray-900">Criar Reserva</button>
 
                 </nav>
