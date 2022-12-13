@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ROUTE_PATHS } from "_/constants";
 import { useAuth } from "_/contexts";
-import { FaCarSide } from "react-icons/fa"
 
 interface Props{
     navigate: (path: string) => void
@@ -20,8 +19,8 @@ export function NavBar( {navigate }: Props){
             <div className="md:mx-0 mx-auto max-w-full px-2 sm:px-6">
                 <div className="flex justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
 
-                <button onClick={goToHome} className="self-start">
-                    <FaCarSide color="#EF4444" size={30}/>
+                <button onClick={goToHome}>
+                    <b className="text-primary text-3xl tracking-logo">NeteApp</b>
                 </button>
 
                 {/* Burger icon to open moblie menu */}
@@ -36,7 +35,7 @@ export function NavBar( {navigate }: Props){
                 </div>
 
                 <nav className="hidden space-x-10 md:flex">
-                    <button onClick={goToCheckin} className="text-base font-medium text-gray-500 hover:text-gray-900">Fazer check-in</button>
+                    <button onClick={goToCheckin} className="text-base font-medium text-gray-500 hover:text-gray-900">Fazer Check-in</button>
                     <button onClick={goToBooking} className="text-base font-medium text-gray-500 hover:text-gray-900">Criar Reserva</button>
 
                 </nav>
