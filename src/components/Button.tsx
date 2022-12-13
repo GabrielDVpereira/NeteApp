@@ -18,18 +18,23 @@ export function Button({ children, styleType='primary', size='default', ...rest 
         'quarter': 'w-1/4',
         'default': ''
     }
+    const getCustomClass = () => {
+        if(styleType === 'success'){
+            return "bg-success hover:bg-success-dark"
+        }
 
-    const customClass = `
-        bg-${styleType}
-        hover:bg-${styleType}-dark
-        text-${styleType}-contrast
-        ${buttonSize[size]}
-    `
+        return `
+            bg-${styleType}
+            hover:bg-${styleType}-dark
+        `
+    }
 
     return (
         <div className={`p-2 ${buttonSize[size]}`}>
             <button
-            className={`${customClass} font-bold py-2 px-4 rounded`} {...rest}>
+                className={`${getCustomClass()} text-white ${buttonSize[size]} font-bold py-2 px-4 rounded`}
+                {...rest}
+            >
                 {children}
             </button>
         </div>
