@@ -23,7 +23,6 @@ export class Booking extends Event {
         const color = approvalColor[approval]
         const title = `${BOOKING_TITLE} ${username} - ${approvalText[approval]}`
         super(start, duration, username, color, title, id)
-        this.generateTexts()
     }
 
     generateTexts(){

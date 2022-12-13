@@ -22,7 +22,6 @@ export class Checkin extends Event {
     ){
         const title = `${username} - ${local}`
         super(start, duration, username, color, title, id)
-        this.generateTexts()
     }
 
     generateTexts(){
