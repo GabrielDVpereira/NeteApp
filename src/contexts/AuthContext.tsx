@@ -1,4 +1,5 @@
 import { useState, createContext, ReactNode, useContext, useEffect, useCallback } from "react";
+import { ROUTE_PATHS } from "_/constants";
 import { User } from "_/models";
 import { IAuthService } from "_/services"
 
@@ -15,6 +16,8 @@ interface ContextData {
     signIn: ()=> Promise<void>
     loadingAuth: boolean
     logout: ()=> void
+    redirectRoute: ROUTE_PATHS
+    addRedirectRoute: (route: ROUTE_PATHS)=> void
 }
 
 const AuthContext = createContext<ContextData>({} as ContextData)
@@ -22,6 +25,7 @@ const AuthContext = createContext<ContextData>({} as ContextData)
 export function AuthContextProvider({ authService, children } : Props) {
     const [user, setUser] = useState<User>({} as User)
     const [loadingAuth, setLoadingAuth] = useState(true)
+    const [redirectRoute, setRedirectRoute] = useState<ROUTE_PATHS>(ROUTE_PATHS.home)
 
     const isAuthenticated = !!user.email
     const isAdmin = user.admin
@@ -39,7 +43,9 @@ export function AuthContextProvider({ authService, children } : Props) {
         checkAuthenticated()
     }, [authService])
 
-
+    const addRedirectRoute = (route: ROUTE_PATHS) => {
+        setRedirectRoute(route)
+    }
 
     const signIn = useCallback(async () => {
         const userResponse = await authService.signIn()
@@ -48,6 +54,7 @@ export function AuthContextProvider({ authService, children } : Props) {
     }, [authService])
 
     const logout = useCallback(() => {
+        setRedirectRoute(ROUTE_PATHS.home)
         authService.logout()
         setUser({} as User)
     }, [authService])
@@ -59,7 +66,9 @@ export function AuthContextProvider({ authService, children } : Props) {
             isAuthenticated,
             isAdmin,
             loadingAuth,
-            logout
+            logout,
+            redirectRoute,
+            addRedirectRoute
         }}>
             {children}
         </AuthContext.Provider>
