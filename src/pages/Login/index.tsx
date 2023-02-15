@@ -3,12 +3,11 @@ import { Button, Image, Text, Title } from "_/components";
 import { useAuth } from "_/contexts";
 import { FaGoogle } from "react-icons/fa"
 import loginImg from "_/assets/login.png"
-import { ROUTE_PATHS } from "_/constants";
 
 export function Login(){
-    const { signIn, isAuthenticated } = useAuth()
+    const { signIn, isAuthenticated, redirectRoute } = useAuth()
 
-    if(isAuthenticated) return <Navigate to={ROUTE_PATHS.home}/>
+    if(isAuthenticated) return <Navigate to={redirectRoute}/>
 
     return (
         <div className="flex flex-col align-center h-screen py-10">
